@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import logo from '../logo.svg'
 
 class Navbar extends Component {
+
   render() {
     return (
       <nav className="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
@@ -17,6 +18,7 @@ class Navbar extends Component {
             placeholder="Search"
             aria-label="Search"
           />
+          <button className="d-block" onClick={this.props.add}>+</button>
         </div>
       </nav>
     )

@@ -7,10 +7,16 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    this.recipes = recipes.results
     this.state = {
-      searchString: ''
+      searchString: '',
+      recipes: []
     }
+  }
+
+  componentDidMount(){
+    this.setState({
+      recipes: recipes.results
+    })
   }
 
   search = event => {
@@ -19,8 +25,29 @@ class App extends Component {
     })
   }
 
+  adicionar = () => {
+    let condicao = false
+    this.state.recipes.filter((recipe) => {
+      if(recipe.title.toLowerCase().includes(this.state.searchString.toLowerCase())){
+        condicao = true
+      }
+    })
+    if(condicao === false){
+      const newItem = {
+        "title": this.state.searchString,
+        "href": "http:\/\/allrecipes.com\/Recipe\/Golden-Wedding-Punch\/Detail.aspx",
+        "ingredients": "lemon juice, water, sugar",
+        "thumbnail": "http:\/\/img.recipepuppy.com\/20.jpg"
+      }
+      this.setState({
+        recipes: [...this.state.recipes, newItem],
+        searchString: ''
+      })
+    }
+  }
+
   recipeItem = () => { return (
-    this.recipes.filter((recipe) => {
+    this.state.recipes.filter((recipe) => {
       if(
         recipe.title.toLowerCase().includes(this.state.searchString.toLowerCase()) ||
         recipe.ingredients.toLowerCase().includes(this.state.searchString.toLowerCase())
@@ -38,12 +65,15 @@ class App extends Component {
   )}
 
   render() {
+    console.log(this.recipes)
     return (
       <div className="App">
         <Navbar
           search={this.search}
+          add={this.adicionar}
         />
         <div className="container mt-10">
+        
           <div className="row">
             {
               this.recipeItem()
